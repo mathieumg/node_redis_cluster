@@ -31,22 +31,25 @@ function connectToNodesOfCluster (firstLink, callback) {
       var items = lines[n].split(' ');
       var name = items[0];
       var flags = items[2];
-      var link = ( flags === 'myself' || flags === 'myself,master') ? firstLink : items[1];
-      //var lastPingSent = items[4];
-      //var lastPongReceived = items[5];
-      var linkState = items[6];
+      if( flags != 'slave' )
+      {
+          var link = ( flags === 'myself' || flags === 'myself,master') ? firstLink : items[1];
+          //var lastPingSent = items[4];
+          //var lastPongReceived = items[5];
+          var linkState = items[6];
 
-      if (lines.length === 1 && lines[1] === '') {
-        var slots = [0, 16383]
-      } else {
-        var slots = items[7].split('-');
-      }
+          if (lines.length === 1 && lines[1] === '') {
+            var slots = [0, 16383]
+          } else {
+            var slots = items[7].split('-');
+          }
 
-      if (linkState === 'connected') {
-        redisLinks.push({name: name, link: connectToLink(link), slots: slots});
-      }
-      if (n === 0) {
-        callback(err, redisLinks);
+          if (linkState === 'connected') {
+            redisLinks.push({name: name, link: connectToLink(link), slots: slots});
+          }
+          if (n === 0) {
+            callback(err, redisLinks);
+          }
       }
     }
   });
