@@ -31,7 +31,7 @@ function connectToNodesOfCluster (firstLink, callback) {
       var items = lines[n].split(' ');
       var name = items[0];
       var flags = items[2];
-      if( flags != 'slave' )
+      if( flags !== 'slave' && flags !== 'slave,fail' )
       {
           var link = ( flags === 'myself' || flags === 'myself,master') ? firstLink : items[1];
           //var lastPingSent = items[4];
